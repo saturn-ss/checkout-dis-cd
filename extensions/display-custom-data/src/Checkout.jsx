@@ -12,7 +12,7 @@ export default reactExtension('purchase.checkout.cart-line-item.render-after', (
 function App() {
   // Use the merchant-defined metafield for watering instructions and map it to a cart line
   const wateringMetafields = useAppMetafields({
-    // type: "product",
+    type: "product",
     namespace: "instructions",
     key: "watering"
   });
