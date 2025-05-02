@@ -12,7 +12,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 
 // 1. Choose an extension target
-export default reactExtension("purchase.checkout.block.render", () => (
+export default reactExtension("purchase.checkout.cart-line-list.render-after", () => (
   <Extension />
 ));
 
@@ -37,25 +37,15 @@ function Extension() {
   // 3. Render a UI
   return (
     <BlockStack border={"dotted"} padding={"tight"}>
-      <Divider />
-      <Banner title="display-custom-data">
+      <Divider size="base" id="colorfull-divider" />
+      {/* <Banner title="display-custom-data">
         {translate("welcome", {
           target: <Text emphasis="italic">{extension.target}</Text>,
         })}
       </Banner>
       <Checkbox onChange={onCheckboxChange}>
         {translate("iWouldLikeAFreeGiftWithMyOrder")}
-      </Checkbox>
+      </Checkbox> */}
     </BlockStack>
   );
-
-  async function onCheckboxChange(isChecked) {
-    // 4. Call the API to modify checkout
-    const result = await applyAttributeChange({
-      key: "requestedFreeGift",
-      type: "updateAttribute",
-      value: isChecked ? "yes" : "no",
-    });
-    console.log("applyAttributeChange result", result);
-  }
 }
