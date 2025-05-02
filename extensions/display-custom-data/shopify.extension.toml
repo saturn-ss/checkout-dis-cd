@@ -3,7 +3,7 @@
 
 # The version of APIs your extension will receive. Learn more:
 # https://shopify.dev/docs/api/usage/versioning
-api_version = "2025-04"
+api_version = "2024-01"
 
 [[extensions]]
 name = "display-custom-data"
@@ -22,7 +22,7 @@ target = "purchase.checkout.cart-line-item.render-after"
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#api-access
-api_access = true
+# api_access = true
 
 # Gives your extension access to make external network calls, using the
 # JavaScript `fetch()` API. Learn more:
@@ -36,9 +36,9 @@ api_access = true
 [[extensions.metafields]]
 namespace = "instructions"
 key = "watering"
-# [[extensions.metafields]]
-# namespace = "my_namespace"
-# key = "my_other_key"
+[[extensions.metafields]]
+namespace = "test_data"
+key = "binding_mount"
 
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:

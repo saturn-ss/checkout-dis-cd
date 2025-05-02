@@ -7,17 +7,17 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 
 // Set the entry points for the extension
-export default reactExtension("purchase.checkout.cart-line-item.render-after", () => <App />);
+export default reactExtension('purchase.checkout.cart-line-item.render-after', () => <App />);
 
 function App() {
   // Use the merchant-defined metafield for watering instructions and map it to a cart line
   const wateringMetafields = useAppMetafields({
-    type: "product",
+    // type: "product",
     namespace: "instructions",
     key: "watering"
   });
+  
   const cartLineTarget = useCartLineTarget();
-
   const [wateringInstructions, setWateringInstructions] = useState("");
 
   useEffect(() => {
