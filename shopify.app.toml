@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "5cebb4b2821ffecf8adad9960819c13a"
+client_id = "42c6696939f7c858f82805dceb133c9a"
 name = "checkout-dis-cd"
-handle = "checkout-dis-cd"
+handle = "checkout-dis-cd-1"
 application_url = "https://shopify.dev/apps/default-app-home"
 embedded = true
 

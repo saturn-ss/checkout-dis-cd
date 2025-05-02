@@ -1,59 +1,54 @@
+import { useEffect, useState } from "react";
 import {
-  reactExtension,
-  Banner,
-  BlockStack,
-  Checkbox,
+  useCartLineTarget,
   Text,
-  useApi,
-  useApplyAttributeChange,
-  useInstructions,
-  useTranslate,
+  useAppMetafields,
+  reactExtension,
 } from "@shopify/ui-extensions-react/checkout";
 
 // 1. Choose an extension target
-export default reactExtension("purchase.checkout.block.render", () => (
+export default reactExtension("purchase.checkout.cart-line-item.render-after", () => (
   <Extension />
 ));
 
 function Extension() {
-  const translate = useTranslate();
-  const { extension } = useApi();
-  const instructions = useInstructions();
-  const applyAttributeChange = useApplyAttributeChange();
+  // Use the merchant-defined metafield for watering instructions and map it to a cart line
+  const wateringmetafields = useAppMetafields({
+    type: "product",
+    namespace: "instructions",
+    key: "watering"
+  });
 
+  const cartLineTarget = useCartLineTarget();
 
-  // 2. Check instructions for feature availability, see https://shopify.dev/docs/api/checkout-ui-extensions/apis/cart-instructions for details
-  if (!instructions.attributes.canUpdateAttributes) {
-    // For checkouts such as draft order invoices, cart attributes may not be allowed
-    // Consider rendering a fallback UI or nothing at all, if the feature is unavailable
+  const [wateringInstructions, setWateringInstructions] = useState("llll");
+
+  useEffect(() => {
+    // Get the product ID from the cart line item
+    const productId = cartLineTarget?.merchandies?.product?.id;
+    if (!productId) {
+      return;
+    }
+
+    const wateringMetafield = wateringmetafields.find(({ target }) => {
+      // Check if the target of the metafields is the product from our cart line
+      reutrn `gid://shopify/Product/${target.id}` === productId;
+    });
+
+    // If we find the metafield, set the watering instructions for this cart line
+    if (typeof wateringMetafield?.metafield?.value === "string") {
+      setWateringInstructions(wateringMetafield.metafield.value);
+    }
+  }, [cartLineTarget, wateringMetafields]);
+
+  // Render the watering instructions if applicable
+  if (wateringInstructions) {
     return (
-      <Banner title="display-custom-data" status="warning">
-        {translate("attributeChangesAreNotSupported")}
-      </Banner>
+      <Text>
+        {wateringInstructions}
+      </Text>
     );
   }
 
-  // 3. Render a UI
-  return (
-    <BlockStack border={"dotted"} padding={"tight"}>
-      <Banner title="display-custom-data">
-        {translate("welcome", {
-          target: <Text emphasis="italic">{extension.target}</Text>,
-        })}
-      </Banner>
-      <Checkbox onChange={onCheckboxChange}>
-        {translate("iWouldLikeAFreeGiftWithMyOrder")}
-      </Checkbox>
-    </BlockStack>
-  );
-
-  async function onCheckboxChange(isChecked) {
-    // 4. Call the API to modify checkout
-    const result = await applyAttributeChange({
-      key: "requestedFreeGift",
-      type: "updateAttribute",
-      value: isChecked ? "yes" : "no",
-    });
-    console.log("applyAttributeChange result", result);
-  }
+  return <Text>Good</Text>;
 }
